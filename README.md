@@ -1,12 +1,16 @@
 📚 Inclusive Learning-Material Selection Under Budget
 
+
+
+
+
+
+
 🎓 Analysis and Design of Algorithms (ADS & AA)
 
 ☕ Java Programming Project
 
 ✨ A Dynamic Programming Approach Using the 0/1 Knapsack Algorithm
-
----
 
 📌 1. Project Overview
 
