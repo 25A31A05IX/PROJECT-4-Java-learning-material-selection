@@ -1,7 +1,7 @@
 📚 Inclusive Learning-Material Selection Under Budget
 
-🎓 ADS & AA Java Project
 
+🎓 ADS & AA Java Project
 📌 1. Project Overview
 
 This project focuses on selecting educational materials within a limited budget while maximizing accessibility benefits. It uses the 0/1 Knapsack Dynamic Programming Algorithm to identify the best combination of learning materials.
