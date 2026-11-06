@@ -4,8 +4,9 @@ import java.util.Comparator;
 
 public class Main {
 
-    // 1. Dynamic Programming Approach
-    static int knapsack(int[] cost, int[] benefit, int budget) {
+    // 1. Dynamic Programming - 0/1 Knapsack
+    static int knapsack(String[] names, int[] cost,
+                        int[] benefit, int budget) {
 
         int n = cost.length;
         int[][] dp = new int[n + 1][budget + 1];
@@ -24,18 +25,17 @@ public class Main {
             }
         }
 
-        System.out.println("\n========== DYNAMIC PROGRAMMING ==========");
+        System.out.println("\n===== DYNAMIC PROGRAMMING =====");
         System.out.println("Selected Learning Materials:");
 
         int w = budget;
         int totalCost = 0;
 
         for (int i = n; i > 0; i--) {
-
             if (dp[i][w] != dp[i - 1][w]) {
 
                 System.out.println(
-                    "Material " + i +
+                    names[i - 1] +
                     " | Cost: " + cost[i - 1] +
                     " | Benefit: " + benefit[i - 1]
                 );
@@ -51,8 +51,9 @@ public class Main {
         return dp[n][budget];
     }
 
-    // 2. Greedy Approach
-    static int greedy(int[] cost, int[] benefit, int budget) {
+    // 2. Greedy Algorithm
+    static int greedy(String[] names, int[] cost,
+                      int[] benefit, int budget) {
 
         int n = cost.length;
         Integer[] items = new Integer[n];
@@ -63,10 +64,8 @@ public class Main {
 
         Arrays.sort(items, new Comparator<Integer>() {
             public int compare(Integer a, Integer b) {
-
                 double ratioA = (double) benefit[a] / cost[a];
                 double ratioB = (double) benefit[b] / cost[b];
-
                 return Double.compare(ratioB, ratioA);
             }
         });
@@ -74,18 +73,17 @@ public class Main {
         int totalCost = 0;
         int totalBenefit = 0;
 
-        System.out.println("\n========== GREEDY APPROACH ==========");
+        System.out.println("\n===== GREEDY APPROACH =====");
         System.out.println("Selected Learning Materials:");
 
         for (int i : items) {
-
             if (cost[i] <= budget - totalCost) {
 
                 totalCost += cost[i];
                 totalBenefit += benefit[i];
 
                 System.out.println(
-                    "Material " + (i + 1) +
+                    names[i] +
                     " | Cost: " + cost[i] +
                     " | Benefit: " + benefit[i]
                 );
@@ -98,7 +96,7 @@ public class Main {
         return totalBenefit;
     }
 
-    // 3. Brute Force Approach
+    // 3. Brute Force Verification
     static int bruteForce(int[] cost, int[] benefit, int budget) {
 
         int n = cost.length;
@@ -110,7 +108,6 @@ public class Main {
             int totalBenefit = 0;
 
             for (int i = 0; i < n; i++) {
-
                 if ((mask & (1 << i)) != 0) {
                     totalCost += cost[i];
                     totalBenefit += benefit[i];
@@ -127,7 +124,7 @@ public class Main {
         return maximumBenefit;
     }
 
-    // Main Method
+    // 4. Main Method
     public static void main(String[] args) {
 
         Scanner sc = new Scanner(System.in);
@@ -138,6 +135,7 @@ public class Main {
 
         System.out.print("Enter number of materials (1-20): ");
         int n = sc.nextInt();
+        sc.nextLine();
 
         if (n <= 0 || n > 20) {
             System.out.println("Invalid number! Enter between 1 and 20.");
@@ -145,19 +143,30 @@ public class Main {
             return;
         }
 
+        String[] names = new String[n];
         int[] cost = new int[n];
         int[] benefit = new int[n];
 
-        // Input materials
+        // Input material details
         for (int i = 0; i < n; i++) {
 
             System.out.println("\nMaterial " + (i + 1));
+
+            System.out.print("Enter material name: ");
+            names[i] = sc.nextLine().trim();
+
+            if (names[i].isEmpty()) {
+                System.out.println("Material name cannot be empty!");
+                sc.close();
+                return;
+            }
 
             System.out.print("Enter cost: ");
             cost[i] = sc.nextInt();
 
             System.out.print("Enter accessibility benefit: ");
             benefit[i] = sc.nextInt();
+            sc.nextLine();
 
             if (cost[i] <= 0 || benefit[i] < 0) {
                 System.out.println("Invalid cost or benefit!");
@@ -166,7 +175,7 @@ public class Main {
             }
         }
 
-        // Input budget
+        // Input total budget
         System.out.print("\nEnter total budget: ");
         int budget = sc.nextInt();
 
@@ -176,14 +185,12 @@ public class Main {
             return;
         }
 
-        // Run Dynamic Programming
-        int dpResult = knapsack(cost, benefit, budget);
+        // Run all algorithms
+        int dpResult = knapsack(names, cost, benefit, budget);
 
-        // Run Greedy
-        int greedyResult = greedy(cost, benefit, budget);
+        int greedyResult = greedy(names, cost, benefit, budget);
 
-        // Run Brute Force
-        System.out.println("\n========== BRUTE FORCE VERIFICATION ==========");
+        System.out.println("\n===== BRUTE FORCE VERIFICATION =====");
 
         int bruteResult = bruteForce(cost, benefit, budget);
 
@@ -196,17 +203,17 @@ public class Main {
         }
 
         // Final comparison
-        System.out.println("\n========== PROJECT COMPARISON ==========");
+        System.out.println("\n===== PROJECT COMPARISON =====");
 
         System.out.println("Dynamic Programming Benefit: " + dpResult);
         System.out.println("Greedy Approach Benefit: " + greedyResult);
         System.out.println("Brute Force Benefit: " + bruteResult);
 
-        System.out.println("\nDP provides the optimal 0/1 Knapsack solution.");
+        System.out.println("\nDP gives the optimal 0/1 Knapsack solution.");
         System.out.println("Greedy is used as a comparison heuristic.");
 
-        // Complexity
-        System.out.println("\n========== COMPLEXITY ANALYSIS ==========");
+        // Complexity analysis
+        System.out.println("\n===== COMPLEXITY ANALYSIS =====");
 
         System.out.println("DP Time Complexity: O(n * W)");
         System.out.println("DP Space Complexity: O(n * W)");
